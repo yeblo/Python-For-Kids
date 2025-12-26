@@ -1,0 +1,56 @@
+def play_game():
+    """Main game function"""
+    print("🎮 Welcome to Four in a Row! 🎮")
+    print("Player 1 uses 'X' and Player 2 uses 'O'")
+    print("Get 4 pieces in a row to win!")
+    
+    board = create_board()
+    current_player = 1
+    game_over = False
+    
+    while not game_over:
+        print_board(board)
+        
+        # Show whose turn it is
+        if current_player == 1:
+            piece = 'X'
+            print("Player 1's turn (X)")
+        else:
+            piece = 'O'
+            print("Player 2's turn (O)")
+        
+        # Get player's choice
+        try:
+            column = int(input("Choose a column (1-7): ")) - 1
+            
+            # Check if column number is valid
+            if column < 0 or column > 6:
+                print("Please choose a number between 1 and 7!")
+                continue
+            
+            # Try to drop the piece
+            if drop_piece(board, column, piece):
+                # Check if this player won
+                if check_winner(board, piece):
+                    print_board(board)
+                    print(f"🎉 Player {current_player} wins! 🎉")
+                    game_over = True
+                
+                # Check if board is full (tie game)
+                elif is_board_full(board):
+                    print_board(board)
+                    print("It's a tie! Good game!")
+                    game_over = True
+                
+                else:
+                    # Switch to other player
+                    if current_player == 1:
+                        current_player = 2
+                    else:
+                        current_player = 1
+            
+            else:
+                print("That column is full! Try another one.")
+        
+        except ValueError:
+            print("Please enter a number!")
